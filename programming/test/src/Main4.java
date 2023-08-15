@@ -11,13 +11,13 @@ public class Main4 {
     //     }
     // }
 
-    public static void main(String[] args) {
-        int[] scores = {30, 40, 50, 60, 90};
-        int sum = 0;
-        int count = 0;
-        for (int value : scores) {
-            System.out.println(value);
-        }
+    // public static void main(String[] args) {
+    //     int[] scores = {30, 40, 50, 60, 90};
+    //     int sum = 0;
+    //     int count = 0;
+    //     for (int value : scores) {
+    //         System.out.println(value);
+    //     }
         //     sum += scores[i];
         //     if (scores[i] >= 50) {
         //         count++;
@@ -27,7 +27,7 @@ public class Main4 {
         // System.out.println("合計点：" + sum);
         // System.out.println("平均点：" + avg);
         // System.out.println("50点以上の科目数：" + count);
-    }
+    // }
 
     // public static void main(String[] args) {
     //     int[] seq = new int[10];
@@ -55,4 +55,14 @@ public class Main4 {
     //         System.out.print(base[seq[i]] + " ");
     //     }
     // }
+    // public static void main(String[] args) {
+    //     int[] array = {1, 2, 3};
+    //     array = null;
+    //     array[0] = 10;
+    // }
+    public static void main(String[] args) {
+        int[] [] scores = {{40, 50, 60}, {80, 60, 70}};
+        System.out.println(scores.length);
+        System.out.println(scores[0].length);
+    }
 }
