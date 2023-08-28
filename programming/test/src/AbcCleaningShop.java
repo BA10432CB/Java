@@ -1,4 +1,4 @@
-public class AbcCleaningShop implements CleaningService{
+public class AbcCleaningShop implements CleaningService {
     String ownerName;
     String address;
     String phone;
