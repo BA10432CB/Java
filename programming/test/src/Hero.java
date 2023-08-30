@@ -23,6 +23,9 @@ public class Hero {
         // }
         this.name = name;
     }
+    public String toString() { //toString()をオーバーライド
+        return "名前：" + this.name + "/ HP：" + this.hp;
+    }
     // public void bye() {
     //     System.out.println("勇者は別れを告げた");
     // }
