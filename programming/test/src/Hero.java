@@ -2,6 +2,7 @@ public class Hero {
     private int hp;
     private String name;
     Sword sword;
+    static int money;
     public int getHp() {
         return this.hp;
     }

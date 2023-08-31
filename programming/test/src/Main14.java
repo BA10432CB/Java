@@ -13,5 +13,10 @@ public class Main14 {
         } else {
             System.out.println("パワーアップするには経験値が足りません");   
         }
+        Hero.money = 100;
+        System.out.println(Hero.money);
+        System.out.println(h1.money);
+        h1.money = 300;
+        System.out.println(h2.money);
     }
 }
