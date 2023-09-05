@@ -1,6 +1,8 @@
 public class Hero {
     private int hp;
     private String name;
+    private String job;
+    private int gold;
     Sword sword;
     static int money;
     public int getHp() {
@@ -23,6 +25,18 @@ public class Hero {
         //     throw new IllegalArgumentException("名前が長すぎる為中断");
         // }
         this.name = name;
+    }
+    public void setJob(String job) {
+        this.job = job;
+    }
+    public String getJob() {
+        return this.job;
+    }
+    public void setGold(int gold) {
+        this.gold = gold;
+    }
+    public int getGold() {
+        return this.gold;
     }
     public String toString() { //toString()をオーバーライド
         return "名前：" + this.name + "/ HP：" + this.hp;
