@@ -1,10 +1,14 @@
 public class Part01 {
     static String name = "ミナト";    //プレイヤーの名前
     static int level = 40;            //プレイヤーのレベル
+    static int hp = 40;               //プレイヤーのHP
     public static void main(String[] args) throws java.io.IOException {
         putOpening();   //序章画面を表示
         putCommand();
-        System.out.println(level);
+
+        if (hp == 0) {
+            return; //これより下の処理は実行せずに自分の関数に戻る
+        }
         putBattle();    //最終決戦後の結果を表示
     }
     /**
@@ -20,20 +24,32 @@ public class Part01 {
     public static void putCommand() throws java.io.IOException {
         put("どうする？");
         put("1．魔王を倒しに行く。");
-        put("2．修行する。");
-        int c = inputCommand();
+        put("2．修行する。(現在のHP：" + hp + ")");
+        put("3．宿屋に泊まる");
+        int c = inputCommand(); 
         if ( c == '1') {
             put("魔王が現れた！");
             put(name + "はレベル" + level + "です。");
         } else if (c == '2') {
-            if (level <= 95){
-                level += 5;
-                put(name + "はレベル" + level + "になりました。");
-                putCommand();
+            if (hp > 3) {
+                if (level <= 95){
+                    level += 5;
+                    hp -= 3;
+                    put(name + "はレベル" + level + "になりました。");
+                    putCommand();
+                } else {
+                    level = 100;
+                    hp -= 3;
+                    put(name + "はレベル" + level + "になりました。");
+                } 
             } else {
-                level = 100;
-                put(name + "はレベル" + level + "になりました。");
+                put(name + "は疲れて修行できなかった。");
+                putCommand();
             }
+        } else if (c == '3') {
+            hp = level;
+            put("HPが全回復した。");
+            putCommand();
         }
     }
     //intにすると戻り値の型を指定 =>　変数に代入することができる
@@ -51,15 +67,17 @@ public class Part01 {
      * @param level　プレイヤーのレベル
      */
     public static void putBattle() {
-        if (level < 50) {
-            put(name + "は魔王に敗北しました。");
+        put("魔王の攻撃！");
+        hp -= 60;
+        put(name + "は60のダメージを受けた。");
+        if (hp < 0) {
+            hp = 0;
+            put(name + "は力尽きた...。");
+            put("魔王に敗北しました。");
             put("GAME OVER...");
-        } else if (level >= 50 && level <70) {
-            put(name + "は魔王を倒しました！");
-            put("GAME CLEAR!");
         } else {
-
-            put(name + "は魔王軍を全滅させました！");
+            put(name + "の攻撃！");
+            put(name + "は魔王を倒しました！");
             put("GAME CLEAR!!");
         }
     }
