@@ -1,7 +1,6 @@
 import java.io.*;
 public class Part18 {
     public static void main(String[] args) throws IOException {
-        MyFrame my = new MyFrame();
-        my.createFrame();                                         //JFrameのWindowを表示
+        new MyFrame();                                       //JFrameのWindowを表示,インスタンス化をするだけでコンストラクタが呼び出される
     }
 }

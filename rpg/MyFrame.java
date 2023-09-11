@@ -3,13 +3,24 @@ import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
-public class MyFrame {
-    void createFrame() throws IOException {
-        JFrame jf = new JFrame();                                       //JFrameクラスのインスタンスを生成する
-        jf.setBounds(100, 80, 1000, 600);              //初期状態のWindowの配置と大きさを指定する(x, y, width, height)
-        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);              //JFrameの×を押した際にプログラムを止める為の指示
-        jf.add(createBasicPanel());
-        jf.setVisible(true); 
+public class MyFrame extends JFrame {                           //JFrameクラスの継承
+    // void createFrame() throws IOException 
+    MyFrame() throws IOException {                               //コンストラクタ化　ファイル名と同じ名前で定義する
+        setBounds(100, 80, 1000, 600);              //初期状態のWindowの配置と大きさを指定する(x, y, width, height)
+        setDefaultCloseOperation(EXIT_ON_CLOSE);              //JFrameの×を押した際にプログラムを止める為の指示
+        add(createBasicPanel());
+        setVisible(true); 
+
+        enableEvents(java.awt.AWTEvent.KEY_EVENT_MASK);     //キー入力有効化
+    }
+
+    protected void processKeyEvent(java.awt.event.KeyEvent e) {                     //キー受け取り・どのキーが押されたか判定
+        if (e.getID() == java.awt.event.KeyEvent.KEY_PRESSED ){
+            System.out.println("キー" + e.getKeyCode() + "イベント" + e.getID());
+            if (e.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+                Part01.put("Enter");
+            }
+        }
     }
 
     JPanel createBasicPanel() throws IOException {
@@ -19,7 +30,7 @@ public class MyFrame {
         JPanel jpChild1 = createPanel(Color.BLACK);                              //背景色を指定
         jp.add(jpChild1);
         JLabel jl = new JLabel(Player.getStatus());                             //JFrame上に出力するインスタンスを生成
-        jl.setFont(new Font(Font.SERIF, 0, 50));                     //Font種類大きさなどの設定
+        jl.setFont(new Font("メイリオ", 0, 50));                     //Font種類大きさなどの設定
         jl.setForeground(new Color(255, 128, 0));                         //文字の色の指定 色の要素を指定するならインスタンスを生成する必要がある
         jpChild1.add(jl);                                                       //JFrame上のJPanelに出力
         
@@ -34,16 +45,13 @@ public class MyFrame {
         putMonster(1, 2, cw, ch, sw, sh, file, bi, jpChild2);
         putMonster(0, 1, cw, ch, sw, sh, file, bi, jpChild2);
         putMonster(2, 0, cw, ch, sw, sh, file, bi, jpChild2);
-        // JLabel jlMain = new JLabel("<html>1．魔王を倒しに行く。<br>2．修行する。<br>3．宿屋に泊まる。");
-        // jlMain.setFont(new Font(Font.SERIF, 0, 50));
-        // jpChild2.add(jlMain);
         
         //レイアウト３行目
         JPanel jpChild3 = createPanel(Color.BLACK);                              //背景色を指定
         jp.add(jpChild3);
         
         JLabel jlChild = new JLabel("魔王が世界を滅ぼそうとしています。");
-        jlChild.setFont(new Font(Font.SERIF, 0, 50));
+        jlChild.setFont(new Font("メイリオ", 0, 50));
         jlChild.setForeground(Color.WHITE);
         jpChild3.add(jlChild);
 
