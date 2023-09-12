@@ -55,24 +55,24 @@ public class Console {
             i += 1;
         }
         Part01.put("");
-        int d = r.nextInt(4) + 1; //修行の際に受けるダメージのランダム1~4
-        if (Player.hp > d) {
-            if (Player.level < 100){
-                receiveDamage(d);
-                Player.level += enemy;
-                if (Player.level > 100) {
-                    Player.level = 100;
-                }
-                Part01.put(Player.name + "はレベル" + Player.level + "になりました。");
-                putCommand();
-            } else if (Player.level == 100) {
-                Part01.put("ミナトは強くなりすぎたので、魔王討伐に向かいました");
-                Part01.put("魔王が現れた！");
-            }
-        } else {
-            Part01.put(Player.name + "は疲れて修行できなかった。");
-            putCommand();
-        }
+        // int d = r.nextInt(4) + 1; //修行の際に受けるダメージのランダム1~4
+        // if (Player.hp > d) {
+        //     if (Player.level < 100){
+        //         receiveDamage(d);
+        //         Player.level += enemy;
+        //         if (Player.level > 100) {
+        //             Player.level = 100;
+        //         }
+        //         Part01.put(Player.name + "はレベル" + Player.level + "になりました。");
+        //         putCommand();
+        //     } else if (Player.level == 100) {
+        //         Part01.put("ミナトは強くなりすぎたので、魔王討伐に向かいました");
+        //         Part01.put("魔王が現れた！");
+        //     }
+        // } else {
+        //     Part01.put(Player.name + "は疲れて修行できなかった。");
+        //     putCommand();
+        // }
     }
     //intにすると戻り値の型を指定 =>　変数に代入することができる
     public static int inputCommand() throws java.io.IOException {
