@@ -38,4 +38,13 @@ public class MyLib {
         jlImage.setSize(sw, sh);
         jpChild2.add(jlImage);
     }
+
+    // static void putImage(int x, int y, int cw, int ch, int sw, int sh, BufferedImage biInn,  JPanel jpChild2) {
+    //     BufferedImage biInnPart = biInn.getSubimage(x, y, cw, ch);
+    //     Image biInnPartReduction = biInnPart.getScaledInstance(sw, sh, Image.SCALE_DEFAULT);
+    //     ImageIcon iiInn = new ImageIcon(biInnPartReduction);
+    //     JLabel jlImageInn = new JLabel(iiInn);
+    //     jlImageInn.setSize(sw, sh);
+    //     jpChild2.add(jlImageInn);
+    // }
 }

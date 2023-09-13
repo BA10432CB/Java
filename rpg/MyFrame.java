@@ -5,14 +5,17 @@ import java.io.*;
 import javax.imageio.*;
 import javax.swing.*;   //JFrame,JLabel,JPanel
 import java.util.Random; 
-public class MyFrame extends JFrame {                                           //JFrameクラスの継承
+public class MyFrame extends JFrame {    
+    JLabel jl;                                       //JFrameクラスの継承
     JLabel jlMsg;
     JPanel jpChild2;
     BufferedImage bi;
-    MyFrame() throws IOException {
-        File file = new File("pipo-charachip020.png");                 //ファイルを開く
-        bi = ImageIO.read(file);                                                //画像全体を読み込む
-        //コンストラクタ化　ファイル名と同じ名前で定義する
+    BufferedImage biInn;
+    MyFrame() throws IOException {                                              //コンストラクタ化　ファイル名と同じ名前で定義する
+        File file1 = new File("pipo-charachip020.png");                 //ファイルを開く
+        bi = ImageIO.read(file1);                                                //画像全体を読み込む
+        File fileInn = new File("32x32mapchip_20190721.png");
+        biInn = ImageIO.read(fileInn);
         setBounds(100, 80, 1000, 600);                         //初期状態のWindowの配置と大きさを指定する(x, y, width, height)
         setDefaultCloseOperation(EXIT_ON_CLOSE);                                //JFrameの×を押した際にプログラムを止める為の指示
         add(createBasicPanel());
@@ -32,7 +35,8 @@ public class MyFrame extends JFrame {                                           
                 addMonster();
             }
             if (e.getKeyCode() == KeyEvent.VK_3 || e.getKeyCode() == KeyEvent.VK_NUMPAD3) {
-                jlMsg.setText("体力が全回復した！");
+                jpChild2.removeAll();
+                stayInn();
             }
         }
     }
@@ -41,11 +45,11 @@ public class MyFrame extends JFrame {                                           
 
         JPanel jp = MyLib.createPanel(Color.BLACK);
         //レイアウト1行目
-    JPanel jpChild1 = MyLib.createPanel(Color.BLACK);                           //背景色を指定
-        jpChild1.setPreferredSize(new Dimension(1000, 100));
+        JPanel jpChild1 = MyLib.createPanel(Color.BLACK);                           //背景色を指定
         jp.add(jpChild1);
-        JLabel jl = new JLabel(Player.getStatus());                             //JFrame上に出力するインスタンスを生成
+        jl = new JLabel(Player.getStatus());                             //JFrame上に出力するインスタンスを生成
         jl.setFont(new Font("メイリオ", 0, 50));                //Font種類大きさなどの設定
+        jl.setPreferredSize(new Dimension(1000, 100));
         jl.setForeground(new Color(255, 128, 0));                         //文字の色の指定 色の要素を指定するならインスタンスを生成する必要がある
         jpChild1.add(jl);                                                       //JFrame上のJPanelに出力
         
@@ -79,24 +83,28 @@ public class MyFrame extends JFrame {                                           
         int enemy = r.nextInt(4) + 1;
         //敵グラフィック表示
         int i = 0; //敵を出現させる
-        int sw = 200; int sh = 200;
+        int sw = 100; int sh = 100;
         int cw = 96; int ch = 96;                                              
         int x = 0; int y =  r.nextInt(4);
         while (i < enemy) {
+            // MyLib.putMonster(320, 240, 320, 240, 400, 300, biInn, jpChild2);
             MyLib.putMonster(x, y, cw, ch, sw, sh, bi, jpChild2);
             i += 1;
         }
-        
+        trainingAction(r, enemy);
+    }
+
+    void trainingAction(Random r, int e) {
         int d = r.nextInt(4) + 1; //修行の際に受けるダメージのランダム1~4
         if (Player.hp > d) {
             if (Player.level < 100){
                 Console.receiveDamage(d);
-                Player.level += enemy;
+                Player.level += e;
                 if (Player.level > 100) {
                     Player.level = 100;
                 }
                 jlMsg.setText(
-                    "<html>敵が" + enemy + "体現れた！<br>" +
+                    "<html>敵が" + e + "体現れた！<br>" +
                     Player.name + "は" + d + "のダメージを受けた。<br>" +
                     Player.name + "はレベル" + Player.level + "になりました。");
                 // putCommand();
@@ -105,8 +113,21 @@ public class MyFrame extends JFrame {                                           
             //     Part01.put("魔王が現れた！");
             // }
         } else {
-            jlMsg.setText(Player.name + "は疲れて修行できなかった。");
+            jlMsg.setText("<html>" + Player.name + "は疲れて修行できなかった。<br>" +
+                          Player.name + "は逃げ出した。");
             // putCommand();
+        }
+        jl.setText(Player.getStatus());
+    }
+
+    void stayInn() {
+        if (Player.gold >= 10){
+            Player.gold -= 10;
+            Player.hp = Player.level;
+            jlMsg.setText("<html>" + Player.name + "10ゴールドを支払った。<br>体力が全回復した！");
+            jl.setText(Player.getStatus());
+        } else {
+            jlMsg.setText("所持金が足りません。");
         }
     }
 }
