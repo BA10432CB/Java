@@ -39,12 +39,12 @@ public class MyLib {
         jpChild2.add(jlImage);
     }
 
-    // static void putImage(int x, int y, int cw, int ch, int sw, int sh, BufferedImage biInn,  JPanel jpChild2) {
-    //     BufferedImage biInnPart = biInn.getSubimage(x, y, cw, ch);
-    //     Image biInnPartReduction = biInnPart.getScaledInstance(sw, sh, Image.SCALE_DEFAULT);
-    //     ImageIcon iiInn = new ImageIcon(biInnPartReduction);
-    //     JLabel jlImageInn = new JLabel(iiInn);
-    //     jlImageInn.setSize(sw, sh);
-    //     jpChild2.add(jlImageInn);
-    // }
+    static void putImage(int x, int y, int cw, int ch, int sw, int sh, BufferedImage bi,  JPanel jpChild2) {
+        BufferedImage biPart = bi.getSubimage(x, y, cw, ch);
+        Image biPartReduction = biPart.getScaledInstance(sw, sh, Image.SCALE_DEFAULT);
+        ImageIcon ii = new ImageIcon(biPartReduction);
+        JLabel jlImage = new JLabel(ii);
+        jlImage.setSize(sw, sh);
+        jpChild2.add(jlImage);
+    }
 }

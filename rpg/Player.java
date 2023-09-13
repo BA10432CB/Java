@@ -6,4 +6,10 @@ public class Player {
     public static String getStatus() {
         return("　" + name + "　LV：" + level + "　HP：" + hp + "　所持金：" + gold);
     }
+
+    public static void init() {
+        level = 40;
+        hp = 40;
+        gold = 50;
+    }
 }

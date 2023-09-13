@@ -117,6 +117,6 @@ public class Console {
      */
     public static void receiveDamage(int damage) {
         Player.hp -= damage;
-        Part01.put(Player.name + "は" + damage + "のダメージを受けた。");
+        // Part01.put(Player.name + "は" + damage + "のダメージを受けた。");
     }
 }
