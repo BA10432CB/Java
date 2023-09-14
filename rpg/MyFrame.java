@@ -13,7 +13,9 @@ public class MyFrame extends JFrame { //implements KeyListener
     BufferedImage bi;
     BufferedImage biInn;
     BufferedImage biDevil;
-    MyFrame() throws IOException {                                              //コンストラクタ化　ファイル名と同じ名前で定義する
+    Player m_player;
+    public MyFrame() throws IOException { 
+        m_player = new Player();                                             //コンストラクタ化　ファイル名と同じ名前で定義する
         File file1 = new File("pipo-charachip020.png");                 //ファイルを開く
         bi = ImageIO.read(file1);                                                //画像全体を読み込む
         File fileInn = new File("32x32mapchip_20190721.png");
@@ -47,10 +49,10 @@ public class MyFrame extends JFrame { //implements KeyListener
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                 jpChild2.removeAll();
                 jpChild2.add(jlMain);
-                if (Player.hp == 0) {
+                if (m_player == null) { // GAMEOVERのとき null空っぽ
                     jlMsg.setText("魔王が世界を滅ぼそうとしています。");
-                    Player.init();
-                    jl.setText(Player.getStatus());
+                    m_player = new Player();
+                    jl.setText(m_player.getStatus());
                 } else {
                     jlMsg.setText("何をしますか？");
                 }
@@ -64,7 +66,7 @@ public class MyFrame extends JFrame { //implements KeyListener
         //レイアウト1行目
         JPanel jpChild1 = MyLib.createPanel(Color.BLACK);                           //背景色を指定
         jp.add(jpChild1);
-        jl = new JLabel(Player.getStatus());                             //JFrame上に出力するインスタンスを生成
+        jl = new JLabel(m_player.getStatus());                             //JFrame上に出力するインスタンスを生成
         jl.setFont(new Font("メイリオ", 0, 50));                //Font種類大きさなどの設定
         jl.setPreferredSize(new Dimension(1000, 100));
         jl.setForeground(new Color(255, 128, 0));                         //文字の色の指定 色の要素を指定するならインスタンスを生成する必要がある
@@ -91,7 +93,7 @@ public class MyFrame extends JFrame { //implements KeyListener
         jlMsg.setForeground(Color.WHITE);
         jpChild3.add(jlMsg);
 
-        return(jp);                                                              //これは必須
+        return(jp);                                                              //これは必須戻り値JPanelを設定している
     }
 
     //魔王を倒しに行く
@@ -104,18 +106,19 @@ public class MyFrame extends JFrame { //implements KeyListener
 
     void battleDevil() {
         int d = 60;
+        m_player.hp -= d;
         jlMsg.setText("<html>魔王が現れた！<br>" + 
                       "魔王の攻撃！<br>" + 
-                      Player.name + "は" + d + "のダメージを受けた。<br>");
-        Console.receiveDamage(d);
-        if (Player.hp < 0) {
-            Player.hp = 0;
-            jl.setText(Player.getStatus());
-            String sFault = "<html>" + Player.name + "は力尽きた...。<br>" + "魔王に敗北しました。<br>" + "GAME OVER...";
+                      m_player.name + "は" + d + "のダメージを受けた。<br>");
+        String sFault = "<html>" + m_player.name + "は力尽きた...。<br>" + "魔王に敗北しました。<br>" + "GAME OVER...";
+        String sClear = "<html>" + m_player.name + "の攻撃！<br>" + m_player.name + "は魔王を倒しました！<br>" + "GAME CLEAR!!";
+        if (m_player.hp <= 0) {
+            m_player.hp = 0;
+            jl.setText(m_player.getStatus());
             jlMsg.setText(sFault);
+            m_player = null;
         } else {
-            jl.setText(Player.getStatus());
-            String sClear = "<html>" + Player.name + "の攻撃！<br>" + Player.name + "は魔王を倒しました！<br>" + "GAME CLEAR!!";
+            jl.setText(m_player.getStatus());
             jlMsg.setText(sClear);
         }
     }
@@ -139,28 +142,28 @@ public class MyFrame extends JFrame { //implements KeyListener
 
     void trainingAction(Random r, int e) {
         int d = r.nextInt(4) + 1; //修行の際に受けるダメージのランダム1~4
-        if (Player.hp > d) {
-            if (Player.level < 100){
-                Console.receiveDamage(d);
-                Player.level += e;
-                if (Player.level > 100) {
-                    Player.level = 100;
-                }
-                jlMsg.setText(
-                    "<html>敵が" + e + "体現れた！<br>" +
-                    Player.name + "は" + d + "のダメージを受けた。<br>" +
-                    Player.name + "はレベル" + Player.level + "になりました。");
-                // putCommand();
-            } //else if (Player.level == 100) {
-            //     Part01.put("ミナトは強くなりすぎたので、魔王討伐に向かいました");
-            //     Part01.put("魔王が現れた！");
-            // }
+        String sFixed = "<html>敵が" + e + "体現れた！<br>" +
+                        m_player.name + "は" + d + "のダメージを受けた。<br>";
+        String sUp = m_player.name + "はレベル" + m_player.level + "になりました。";
+        String sGameOver = "GAME OVER...";
+        m_player.hp -= d;
+        if (m_player.hp <= 0) {
+            m_player.hp = 0;
+            jl.setText(m_player.getStatus());
+            m_player = null;
         } else {
-            jlMsg.setText("<html>" + Player.name + "は疲れて修行できなかった。<br>" +
-                          Player.name + "は逃げ出した。");
-            // putCommand();
+            jl.setText(m_player.getStatus());
         }
-        jl.setText(Player.getStatus());
+        try {
+            m_player.level += e;
+            if (m_player.level > 100) {
+                m_player.level = 100;
+            }
+            sFixed += sUp;
+        } catch (NullPointerException npe) {
+            sFixed += sGameOver;
+        }
+        jlMsg.setText(sFixed);
     }
 
     //宿屋に泊まる
@@ -172,22 +175,22 @@ public class MyFrame extends JFrame { //implements KeyListener
     }
 
     void stayInn() {
-        if (Player.gold >= 10){
-            Player.gold -= 10;
-            Player.hp = Player.level;
-            jlMsg.setText("<html>" + Player.name + "10ゴールドを支払った。<br>体力が全回復した！");
-            jl.setText(Player.getStatus());
+        if (m_player.gold >= 10){
+            m_player.gold -= 10;
+            m_player.hp = m_player.level;
+            jlMsg.setText("<html>" + m_player.name + "10ゴールドを支払った。<br>体力が全回復した！");
+            jl.setText(m_player.getStatus());
         } else {
             jlMsg.setText("所持金が足りません。");
         }
     }
 
     // public void keyPressed(KeyEvent e) {
-    //     String sFault = "<html>" + Player.name + "は力尽きた...。<br>" + "魔王に敗北しました。" + "GAME OVER...";
-    //     String sClear = "<html>" + Player.name + "の攻撃！<br>" + Player.name + "は魔王を倒しました！<br>" + "GAME CLEAR!!";
+    //     String sFault = "<html>" + m_player.name + "は力尽きた...。<br>" + "魔王に敗北しました。" + "GAME OVER...";
+    //     String sClear = "<html>" + m_player.name + "の攻撃！<br>" + m_player.name + "は魔王を倒しました！<br>" + "GAME CLEAR!!";
     //     if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-    //         if (Player.hp < 0) {
-    //             Player.hp = 0;
+    //         if (m_player.hp < 0) {
+    //             m_player.hp = 0;
     //             jlMsg.setText(sFault);
     //         } else {
     //             jlMsg.setText(sClear);
