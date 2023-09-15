@@ -67,7 +67,7 @@ public class MyFrame extends JFrame { //implements KeyListener
         JPanel jpChild1 = MyLib.createPanel(Color.BLACK);                           //背景色を指定
         jp.add(jpChild1);
         jl = new JLabel(m_player.getStatus());                             //JFrame上に出力するインスタンスを生成
-        jl.setFont(new Font("メイリオ", 0, 50));                //Font種類大きさなどの設定
+        jl.setFont(new Font("メイリオ", 0, 45));                //Font種類大きさなどの設定
         jl.setPreferredSize(new Dimension(1000, 100));
         jl.setForeground(new Color(255, 128, 0));                         //文字の色の指定 色の要素を指定するならインスタンスを生成する必要がある
         jpChild1.add(jl);                                                       //JFrame上のJPanelに出力
@@ -106,14 +106,14 @@ public class MyFrame extends JFrame { //implements KeyListener
 
     void battleDevil() {
         int d = 60;
-        m_player.hp -= d;
+        m_player.setHp(jl, m_player.getHp() - d);
         jlMsg.setText("<html>魔王が現れた！<br>" + 
                       "魔王の攻撃！<br>" + 
                       m_player.name + "は" + d + "のダメージを受けた。<br>");
         String sFault = "<html>" + m_player.name + "は力尽きた...。<br>" + "魔王に敗北しました。<br>" + "GAME OVER...";
         String sClear = "<html>" + m_player.name + "の攻撃！<br>" + m_player.name + "は魔王を倒しました！<br>" + "GAME CLEAR!!";
-        if (m_player.hp <= 0) {
-            m_player.hp = 0;
+        if (m_player.getHp() <= 0) {
+            m_player.setHp(jl, 0);
             jl.setText(m_player.getStatus());
             jlMsg.setText(sFault);
             m_player = null;
@@ -144,23 +144,18 @@ public class MyFrame extends JFrame { //implements KeyListener
         int d = r.nextInt(4) + 1; //修行の際に受けるダメージのランダム1~4
         String sFixed = "<html>敵が" + e + "体現れた！<br>" +
                         m_player.name + "は" + d + "のダメージを受けた。<br>";
-        String sUp = m_player.name + "はレベル" + m_player.level + "になりました。";
-        String sGameOver = "GAME OVER...";
-        m_player.hp -= d;
-        if (m_player.hp <= 0) {
-            m_player.hp = 0;
-            jl.setText(m_player.getStatus());
+                        String sGameOver = "GAME OVER...";
+        m_player.setHp(jl, m_player.getHp() - d);
+        if (m_player.getHp() <= 0) {
+            m_player.setHp(jl, 0);
             m_player = null;
         } else {
-            jl.setText(m_player.getStatus());
         }
         try {
-            m_player.level += e;
-            if (m_player.level > 100) {
-                m_player.level = 100;
-            }
+            m_player.setLevel(jl, m_player.getLevel() + e);
+            String sUp = m_player.name + "はレベル" + m_player.getLevel() + "になりました。";
             sFixed += sUp;
-        } catch (NullPointerException npe) {
+        } catch (NullPointerException npe) { // 例外のキャッチ
             sFixed += sGameOver;
         }
         jlMsg.setText(sFixed);
@@ -177,32 +172,10 @@ public class MyFrame extends JFrame { //implements KeyListener
     void stayInn() {
         if (m_player.gold >= 10){
             m_player.gold -= 10;
-            m_player.hp = m_player.level;
+            m_player.setHp(jl, m_player.getLevel());
             jlMsg.setText("<html>" + m_player.name + "10ゴールドを支払った。<br>体力が全回復した！");
-            jl.setText(m_player.getStatus());
         } else {
             jlMsg.setText("所持金が足りません。");
         }
     }
-
-    // public void keyPressed(KeyEvent e) {
-    //     String sFault = "<html>" + m_player.name + "は力尽きた...。<br>" + "魔王に敗北しました。" + "GAME OVER...";
-    //     String sClear = "<html>" + m_player.name + "の攻撃！<br>" + m_player.name + "は魔王を倒しました！<br>" + "GAME CLEAR!!";
-    //     if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-    //         if (m_player.hp < 0) {
-    //             m_player.hp = 0;
-    //             jlMsg.setText(sFault);
-    //         } else {
-    //             jlMsg.setText(sClear);
-    //         }
-    //     }
-    // }
-
-    // public void keyTyped(KeyEvent e) {
-	// 	//使用しないので空にしておきます。
-	// }
-
-    // public void keyReleased(KeyEvent e) {
-	// 	//使用しないので空にしておきます。
-	// }
 }

@@ -4,7 +4,7 @@ public class Part01 {
         m_player = new Player();
         // Console.putOpening();   //序章画面を表示
         // Console.putCommand();
-        if (m_player.hp == 0) {
+        if (m_player.getHp() == 0) {
             return; //これより下の処理は実行せずに自分の関数に戻る
         }
         // Console.putBattle();    //最終決戦後の結果を表示
